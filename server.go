@@ -1,14 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/satriaa14/websocketchat/handler"
 	"github.com/satriaa14/websocketchat/model"
 )
 
 func main() {
+
+	port := os.Getenv("PORT")
+	fmt.Print(port)
+
 	// Create a simple file server
 	fs := http.FileServer(http.Dir("./frontend"))
 	http.Handle("/", fs)
@@ -20,8 +26,8 @@ func main() {
 	go model.SendMessages()
 
 	// Start the server on localhost port 8000 and log any errors
-	log.Println("http server started on :8000")
-	err := http.ListenAndServe(":8000", nil)
+	log.Println("http server started on :" + port)
+	err := http.ListenAndServe(":"+port, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
